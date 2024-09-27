@@ -1,0 +1,39 @@
+function GdriveFiles() {
+
+   const folderId = 'Drive ID'
+
+  const folder = DriveApp.getFolderById(folderId)
+
+  const files = folder.getFiles()
+
+  const source = SpreadsheetApp.getActiveSpreadsheet();
+
+  const sheet = source.getSheetByName('Sheet Tab');
+
+  const data = [];
+
+  while (files.hasNext()) {
+
+      const childFile = files.next();
+
+      var info = [ 
+
+        childFile.getName(), 
+
+        childFile.getUrl(),
+
+        childFile.getLastUpdated(),
+
+        childFile.getThumbnail (),
+
+        Drive.Files.get(childFile.getId()).lastModifyingUser
+
+      ];
+
+        data.push(info);
+
+  }
+
+  sheet.getRange(2,1,data.length,data[0].length).setValues(data);
+
+}
